@@ -3,32 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon.png">
     <title>Pusat Kuis Interaktif</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;900&family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Floating shapes animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="25" cy="25" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="2.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="30" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s infinite linear;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-100px) translateY(-100px); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.8rem;
+            color: #4a5568;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: bounce 2s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .name-section {
+            margin-bottom: 40px;
+        }
+
+        .name-label {
+            font-size: 1.3rem;
+            color: #4a5568;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        #name-input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.1rem;
+            font-family: 'Comic Neue', cursive;
+            border: 3px solid #e2e8f0;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+        }
+
+        #name-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        #name-input::placeholder {
+            color: #a0aec0;
+            font-weight: 400;
+        }
+
+        .subjects-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #4a5568;
+            font-weight: 700;
+            margin-bottom: 25px;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .subject-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .subject-btn {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border: none;
+            border-radius: 20px;
+            padding: 25px 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            font-family: 'Comic Neue', cursive;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-btn:nth-child(2) {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .subject-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .subject-btn:hover::before {
+            left: 100%;
+        }
+
+        .subject-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-btn:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .subject-icon {
+            font-size: 2rem;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 50%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .report-section {
+            border-top: 2px dashed #e2e8f0;
+            padding-top: 30px;
+        }
+
+        .report-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 18px 35px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            font-family: 'Comic Neue', cursive;
+        }
+
+        .report-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .stars {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+            color: #c53030;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            font-weight: 600;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .welcome-text {
+                font-size: 1.1rem;
+            }
+
+            .subject-btn {
+                padding: 20px 25px;
+                font-size: 1.1rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .subject-icon {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div id="home">
-            <h1>📚 Pusat Kuis Interaktif 📚</h1>
-            <p>Masukkan namamu di bawah ini, lalu pilih mata pelajaran untuk memulai!</p>
+        <div class="stars">⭐✨🌟</div>
+        
+        <h1>📚 Pusat Kuis Interaktif 📚</h1>
+        
+        <p class="welcome-text">
+            Halo adik-adik! Selamat datang di dunia belajar yang menyenangkan! 🎉<br>
+            Ayo masukkan namamu dan pilih mata pelajaran untuk memulai petualangan belajar!
+        </p>
 
-            <input type="text" id="name-input" placeholder="Ketik namamu di sini...">
-            
-            <div id="subject-selection">
-                <a href="#" class="btn subject-btn" onclick="selectSubject('ipas')">
-                    🌳 Ilmu Pengetahuan Alam dan Sosial
-                </a>
-                <a href="#" class="btn subject-btn" onclick="selectSubject('bahasa_inggris')">
-                    🌍 Bahasa Inggris
-                </a>
+        <div class="name-section">
+            <label class="name-label" for="name-input">🎯 Siapa namamu?</label>
+            <input type="text" id="name-input" placeholder="Tulis nama lengkapmu di sini...">
+            <div id="error-message" class="error-message">
+                🚫 Jangan lupa tulis namamu dulu ya!
             </div>
+        </div>
 
-            <a href="report.html" class="btn report-btn">📊 Lihat Laporan Belajar</a>
+        <div class="subjects-section">
+            <h2 class="section-title">🎨 Pilih Mata Pelajaran Favoritmu!</h2>
+            <div class="subject-buttons">
+                <button class="subject-btn" onclick="selectSubject('ipas')">
+                    <span class="subject-icon">🌳</span>
+                    <span>Ilmu Pengetahuan Alam dan Sosial</span>
+                </button>
+                <button class="subject-btn" onclick="selectSubject('bahasa_inggris')">
+                    <span class="subject-icon">🌍</span>
+                    <span>Bahasa Inggris</span>
+                </button>
+                <button class="subject-btn" onclick="selectSubject('pendidikan_pancasila')">
+                    <span class="subject-icon">🏛</span>
+                    <span>Pendidikan Pancasila</span>
+                </button>
+            </div>
+            
+        </div>
+
+        <div class="report-section">
+            <a href="report.html" class="report-btn">
+                📊 Lihat Laporan Belajarku
+            </a>
         </div>
     </div>
+
     <script>
         const nameInput = document.getElementById('name-input');
+        const errorMessage = document.getElementById('error-message');
 
         // Jika sudah ada nama, tampilkan kembali
         const savedName = localStorage.getItem('quizUsername');
@@ -36,17 +358,59 @@
             nameInput.value = savedName;
         }
 
+        // Sembunyikan pesan error ketika user mulai mengetik
+        nameInput.addEventListener('input', function() {
+            errorMessage.style.display = 'none';
+        });
+
         function selectSubject(subjectKey) {
-            const username = nameInput.value;
-            if (username.trim() === '') {
-                alert('Harap isi namamu terlebih dahulu!');
+            const username = nameInput.value.trim();
+            
+            if (username === '') {
+                errorMessage.style.display = 'block';
+                nameInput.focus();
+                
+                // Tambahkan efek highlight pada input
+                nameInput.style.borderColor = '#e53e3e';
+                nameInput.style.boxShadow = '0 0 0 4px rgba(229, 62, 62, 0.1)';
+                
+                setTimeout(() => {
+                    nameInput.style.borderColor = '#e2e8f0';
+                    nameInput.style.boxShadow = 'inset 0 2px 4px rgba(0, 0, 0, 0.05)';
+                }, 3000);
+                
                 return;
             }
+
             // Simpan nama ke localStorage
             localStorage.setItem('quizUsername', username);
-            // Arahkan ke halaman pemilihan bab
-            window.location.href = `chapters.html?subject=${subjectKey}`;
+            
+            // Tambahkan efek loading sebelum pindah halaman
+            const button = event.target.closest('.subject-btn');
+            button.innerHTML = '<span style="animation: spin 1s linear infinite;">⏳</span> Memuat...';
+            
+            // Pindah ke halaman chapters setelah delay singkat
+            setTimeout(() => {
+                window.location.href = `chapters.html?subject=${subjectKey}`;
+            }, 500);
         }
+
+        // Tambahkan animasi CSS untuk loading spinner
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Enter key support
+        nameInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                document.querySelector('.subject-btn').click();
+            }
+        });
     </script>
 </body>
 </html>

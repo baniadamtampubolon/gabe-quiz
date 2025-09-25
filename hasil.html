@@ -3,111 +3,668 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Kuis</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon.png">    
+    <title>Hasil Kuis - Keren Banget!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', cursive;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Floating animations */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { left: 20%; animation-delay: 2s; }
+        .shape:nth-child(3) { left: 35%; animation-delay: 4s; }
+        .shape:nth-child(4) { left: 50%; animation-delay: 1s; }
+        .shape:nth-child(5) { left: 70%; animation-delay: 3s; }
+        .shape:nth-child(6) { left: 85%; animation-delay: 5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .celebration-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .celebration-emoji {
+            font-size: 4rem;
+            animation: bounce 1s infinite;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .title {
+            color: #4A5568;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-display {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            position: relative;
+            background: conic-gradient(from 0deg, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            animation: rotateGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes rotateGlow {
+            0%, 100% { box-shadow: 0 15px 35px rgba(79, 172, 254, 0.3); }
+            50% { box-shadow: 0 20px 45px rgba(0, 242, 254, 0.4); }
+        }
+
+        .score-inner {
+            width: 170px;
+            height: 170px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .percentage-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .score-fraction {
+            font-size: 1.2rem;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .feedback-message {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 20px;
+            color: white;
+        }
+
+        .feedback-excellent {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .feedback-good {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .feedback-okay {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 18px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
+        }
+
+        .btn-tertiary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn i {
+            font-size: 1.3rem;
+        }
+
+        .evaluation-section {
+            margin-top: 40px;
+        }
+
+        .evaluation-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .evaluation-title {
+            color: #4A5568;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .evaluation-subtitle {
+            color: #718096;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .evaluation-item {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 6px solid #e2e8f0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .evaluation-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .evaluation-item.correct {
+            border-left-color: #48bb78;
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+        }
+
+        .evaluation-item.incorrect {
+            border-left-color: #f56565;
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .answer-section {
+            margin-bottom: 15px;
+        }
+
+        .user-answer {
+            padding: 12px 20px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-answer.correct {
+            background: rgba(72, 187, 120, 0.1);
+            color: #2f855a;
+            border: 2px solid #48bb78;
+        }
+
+        .user-answer.incorrect {
+            background: rgba(245, 101, 101, 0.1);
+            color: #c53030;
+            border: 2px solid #f56565;
+        }
+
+        .correct-answer {
+            background: rgba(72, 187, 120, 0.1);
+            color: #2f855a;
+            padding: 12px 20px;
+            border-radius: 15px;
+            border: 2px solid #48bb78;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .explanation {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            margin-top: 15px;
+        }
+
+        .explanation-text {
+            color: #4a5568;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .status-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .result-card {
+                padding: 25px;
+                border-radius: 20px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .score-circle {
+                width: 160px;
+                height: 160px;
+            }
+
+            .score-inner {
+                width: 140px;
+                height: 140px;
+            }
+
+            .percentage-score {
+                font-size: 2.8rem;
+            }
+
+            .feedback-message {
+                font-size: 1.4rem;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .btn {
+                padding: 15px 25px;
+            }
+
+            .evaluation-item {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Success Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            animation: confetti-fall 3s linear infinite;
+            z-index: 1000;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="floating-shapes">
+        <div class="shape" style="width: 50px; height: 50px; background: #667eea; border-radius: 50%;"></div>
+        <div class="shape" style="width: 30px; height: 30px; background: #f093fb; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+        <div class="shape" style="width: 40px; height: 40px; background: #4facfe; clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);"></div>
+        <div class="shape" style="width: 35px; height: 35px; background: #764ba2; border-radius: 50%;"></div>
+        <div class="shape" style="width: 45px; height: 45px; background: #f5576c; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+        <div class="shape" style="width: 25px; height: 25px; background: #00f2fe; transform: rotate(45deg);"></div>
+    </div>
+
     <div class="container">
-        <div id="result-container">
-            <h1>🎉 Hasil Quiz Kamu! 🎉</h1>
-            <h1 id="percentage-score">0%</h1>
-            <h2 id="final-score">(0 dari 0 Jawaban Benar)</h2>
-            <p id="feedback-message">Kamu Hebat!</p>
-            
-            <div id="evaluation-container">
-                <h3>Yuk, Kita Cek Jawabanmu!</h3>
+        <div class="result-card">
+            <div class="celebration-header">
+                <span class="celebration-emoji" id="celebration-emoji">🎉</span>
+                <h1 class="title">Hasil Quiz Kamu!</h1>
             </div>
-            
-            <a href="quiz.html" class="btn" id="retry-btn">Coba Lagi 🔄</a>
-            <a href="chapters.html" class="btn" id="change-chapter-btn">Pilih Bab Lain</a>
-            <a href="index.html" class="btn">Pilih Pelajaran Lain</a>
+
+            <div class="score-display">
+                <div class="score-circle">
+                    <div class="score-inner">
+                        <div class="percentage-score" id="percentage-score">0%</div>
+                        <div class="score-fraction" id="score-fraction">(0 dari 0)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedback-message" id="feedback-message">
+                Kamu Hebat!
+            </div>
+
+            <div class="action-buttons">
+                <a href="quiz.html" class="btn btn-primary" id="retry-btn">
+                    <i class="fas fa-redo"></i>
+                    <span>Coba Lagi</span>
+                </a>
+                <a href="chapters.html" class="btn btn-secondary" id="change-chapter-btn">
+                    <i class="fas fa-book-open"></i>
+                    <span>Pilih Bab Lain</span>
+                </a>
+                <a href="index.html" class="btn btn-tertiary">
+                    <i class="fas fa-home"></i>
+                    <span>Pilih Pelajaran Lain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="result-card evaluation-section">
+            <div class="evaluation-header">
+                <h2 class="evaluation-title">Mari Kita Review!</h2>
+                <p class="evaluation-subtitle">Yuk lihat jawaban kamu dan belajar lebih banyak! 📚</p>
+            </div>
+            <div id="evaluation-container">
+                <!-- Evaluation items will be inserted here -->
+            </div>
         </div>
     </div>
-<script src="subjects.js"></script>
+
+    <script src="subjects.js"></script>
     <script>
-        // --- BAGIAN ATAS SAMA SEPERTI SEBELUMNYA ---
+        // Get elements
         const percentageScoreElement = document.getElementById('percentage-score');
-        const finalScoreElement = document.getElementById('final-score');
+        const scoreFractionElement = document.getElementById('score-fraction');
         const feedbackMessage = document.getElementById('feedback-message');
         const evaluationContainer = document.getElementById('evaluation-container');
+        const celebrationEmoji = document.getElementById('celebration-emoji');
         
-        const score = localStorage.getItem('mostRecentScore') || 0;
+        // Get data from localStorage
+        const score = parseInt(localStorage.getItem('mostRecentScore')) || 0;
         const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || [];
         const questions = JSON.parse(localStorage.getItem('quizQuestions')) || [];
         const subjectKey = localStorage.getItem('quizSubject');
         const totalQuestions = questions.length;
         
-        const chapterIndex = quizData[subjectKey].chapters.findIndex(c => JSON.stringify(c.questions) === JSON.stringify(questions));
+        // Find chapter index
+        const chapterIndex = quizData[subjectKey] ? 
+            quizData[subjectKey].chapters.findIndex(c => JSON.stringify(c.questions) === JSON.stringify(questions)) : -1;
 
-        // Atur link untuk tombol
+        // Set up navigation links
         const changeChapterBtn = document.getElementById('change-chapter-btn');
         if (subjectKey) {
             changeChapterBtn.href = `chapters.html?subject=${subjectKey}`;
         }
+        
         const retryBtn = document.getElementById('retry-btn');
         retryBtn.href = `quiz.html?subject=${subjectKey}&chapter=${chapterIndex}`;
 
-        // Tampilkan skor
+        // Calculate and display score
         const scorePercentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
-        percentageScoreElement.innerText = `${scorePercentage}%`;
-        finalScoreElement.innerText = `(${score} dari ${totalQuestions} Jawaban Benar)`;
+        
+        // Animate score counting
+        let currentScore = 0;
+        const scoreInterval = setInterval(() => {
+            if (currentScore <= scorePercentage) {
+                percentageScoreElement.innerText = `${currentScore}%`;
+                currentScore += 2;
+            } else {
+                clearInterval(scoreInterval);
+                percentageScoreElement.innerText = `${scorePercentage}%`;
+            }
+        }, 50);
 
-        // Tampilkan feedback (tidak berubah)
+        scoreFractionElement.innerText = `(${score} dari ${totalQuestions})`;
+
+        // Set feedback message and emoji based on score
+        let feedbackClass = 'feedback-okay';
+        let emoji = '🎉';
+        
         if (scorePercentage >= 85) {
-            feedbackMessage.innerText = "Luar biasa! Kamu adalah Master! Pengetahuanmu hebat!";
+            feedbackMessage.innerText = "🌟 Luar biasa! Kamu adalah Master! Pengetahuanmu hebat sekali! 🏆";
+            feedbackClass = 'feedback-excellent';
+            emoji = '🏆';
+            createConfetti();
         } else if (scorePercentage >= 60) {
-            feedbackMessage.innerText = "Bagus sekali! Kamu sudah paham banyak. Terus belajar ya!";
+            feedbackMessage.innerText = "👏 Bagus sekali! Kamu sudah paham banyak. Terus belajar ya! 📚";
+            feedbackClass = 'feedback-good';
+            emoji = '👏';
         } else {
-            feedbackMessage.innerText = "Jangan sedih! Ini adalah awal yang baik. Yuk, kita pelajari lagi bersama agar makin jago!";
+            feedbackMessage.innerText = "💪 Jangan sedih! Ini adalah awal yang baik. Yuk, kita pelajari lagi bersama agar makin jago! 🌟";
+            feedbackClass = 'feedback-okay';
+            emoji = '💪';
         }
+        
+        celebrationEmoji.innerText = emoji;
+        feedbackMessage.className = `feedback-message ${feedbackClass}`;
 
-        // --- FUNGSI BARU UNTUK MENYIMPAN LAPORAN ---
+        // Save learning report
         function saveLearningReport() {
             const username = localStorage.getItem('quizUsername') || 'Anonymous';
             const reports = JSON.parse(localStorage.getItem('learningReportData')) || [];
             
-            const subjectName = quizData[subjectKey].subjectName;
-            const chapterTitle = quizData[subjectKey].chapters[chapterIndex].title;
-            
-            // Hitung percobaan ke berapa untuk bab ini
-            const attempt = reports.filter(r => r.subject === subjectName && r.chapter === chapterTitle).length + 1;
-            
-            const now = new Date();
-            const newReport = {
-                name: username,
-                subject: subjectName,
-                chapter: chapterTitle,
-                score: score,
-                totalQuestions: totalQuestions,
-                percentage: scorePercentage,
-                attempt: attempt,
-                date: now.toLocaleDateString('id-ID'), // Format tanggal Indonesia
-                time: now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) // Format waktu Indonesia
-            };
-            
-            reports.push(newReport);
-            localStorage.setItem('learningReportData', JSON.stringify(reports));
+            if (quizData[subjectKey]) {
+                const subjectName = quizData[subjectKey].subjectName;
+                const chapterTitle = quizData[subjectKey].chapters[chapterIndex]?.title || 'Unknown Chapter';
+                
+                // Count attempts for this chapter
+                const attempt = reports.filter(r => r.subject === subjectName && r.chapter === chapterTitle).length + 1;
+                
+                const now = new Date();
+                const newReport = {
+                    name: username,
+                    subject: subjectName,
+                    chapter: chapterTitle,
+                    score: score,
+                    totalQuestions: totalQuestions,
+                    percentage: scorePercentage,
+                    attempt: attempt,
+                    date: now.toLocaleDateString('id-ID'),
+                    time: now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+                };
+                
+                reports.push(newReport);
+                localStorage.setItem('learningReportData', JSON.stringify(reports));
+            }
         }
 
-        // Panggil fungsi untuk menyimpan laporan
+        // Call save function
         saveLearningReport();
-        // ---------------------------------------------
 
-        // Menampilkan evaluasi jawaban (kode ini tidak berubah)
+        // Display question evaluation
         questions.forEach((question, index) => {
             const userAnswerIndex = userAnswers[index];
             const isCorrect = userAnswerIndex === question.answer;
+            const userAnswerText = userAnswerIndex !== undefined ? question.options[userAnswerIndex] : 'Tidak dijawab';
+            const correctAnswerText = question.options[question.answer];
+            
             const evaluationHTML = `
                 <div class="evaluation-item ${isCorrect ? 'correct' : 'incorrect'}">
-                    <p><b>Pertanyaan ${index + 1}:</b> ${question.question}</p>
-                    <p>Jawabanmu: ${question.options[userAnswerIndex] !== undefined ? question.options[userAnswerIndex] : 'Tidak dijawab'} ${isCorrect ? '✅' : '❌'}</p>
-                    ${!isCorrect ? `<p><b>Jawaban Benar: ${question.options[question.answer]}</b></p>` : ''}
-                    <p class="explanation"><i>Penjelasan: ${question.explanation}</i></p>
+                    <div class="question-number">Pertanyaan ${index + 1}</div>
+                    <p class="question-text">${question.question}</p>
+                    
+                    <div class="answer-section">
+                        <div class="user-answer ${isCorrect ? 'correct' : 'incorrect'}">
+                            <i class="fas ${isCorrect ? 'fa-check-circle' : 'fa-times-circle'} status-icon"></i>
+                            <span><strong>Jawabanmu:</strong> ${userAnswerText}</span>
+                        </div>
+                        
+                        ${!isCorrect ? `
+                            <div class="correct-answer">
+                                <i class="fas fa-lightbulb status-icon"></i>
+                                <span><strong>Jawaban Benar:</strong> ${correctAnswerText}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="explanation">
+                        <p class="explanation-text">💡 ${question.explanation}</p>
+                    </div>
                 </div>
             `;
             evaluationContainer.innerHTML += evaluationHTML;
         });
+
+        // Confetti animation for excellent scores
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+
+        // Add entrance animations with delays
+        setTimeout(() => {
+            document.querySelector('.score-display').style.animation = 'slideInUp 0.8s ease-out';
+        }, 300);
+
+        setTimeout(() => {
+            document.querySelector('.feedback-message').style.animation = 'slideInUp 0.8s ease-out';
+        }, 600);
+
+        setTimeout(() => {
+            document.querySelector('.action-buttons').style.animation = 'slideInUp 0.8s ease-out';
+        }, 900);
     </script>
 </body>
 </html>
