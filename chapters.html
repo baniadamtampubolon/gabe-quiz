@@ -19,7 +19,6 @@
     
     <script src="subjects.js"></script> 
     <script>
-        // Mengambil parameter 'subject' dari URL
         const urlParams = new URLSearchParams(window.location.search);
         const subjectKey = urlParams.get('subject');
         
@@ -32,11 +31,37 @@
             subjectTitleElement.innerText = `Pilih Bab - ${subjectData.subjectName}`;
             
             subjectData.chapters.forEach((chapter, index) => {
-                const chapterLink = document.createElement('a');
-                chapterLink.href = `quiz.html?subject=${subjectKey}&chapter=${index}`;
-                chapterLink.className = 'btn chapter-btn';
-                chapterLink.innerText = chapter.title;
-                chapterListElement.appendChild(chapterLink);
+                // Buat div untuk setiap baris bab
+                const chapterRow = document.createElement('div');
+                chapterRow.className = 'chapter-row';
+
+                // Buat judul bab
+                const chapterTitle = document.createElement('h3');
+                chapterTitle.innerText = chapter.title;
+
+                // Buat div untuk tombol-tombol
+                const buttonGroup = document.createElement('div');
+                buttonGroup.className = 'button-group';
+
+                // Buat tombol "Lihat Materi" (jika materi tersedia)
+                if (chapter.summary && chapter.summary.length > 0) {
+                    const materialLink = document.createElement('a');
+                    materialLink.href = `material.html?subject=${subjectKey}&chapter=${index}`;
+                    materialLink.className = 'btn material-btn';
+                    materialLink.innerHTML = '🧠 Lihat Materi';
+                    buttonGroup.appendChild(materialLink);
+                }
+
+                // Buat tombol "Kerjakan Kuis"
+                const quizLink = document.createElement('a');
+                quizLink.href = `quiz.html?subject=${subjectKey}&chapter=${index}`;
+                quizLink.className = 'btn quiz-btn';
+                quizLink.innerHTML = '📝 Kerjakan Kuis';
+                buttonGroup.appendChild(quizLink);
+                
+                chapterRow.appendChild(chapterTitle);
+                chapterRow.appendChild(buttonGroup);
+                chapterListElement.appendChild(chapterRow);
             });
         } else {
             subjectTitleElement.innerText = 'Mata Pelajaran Tidak Ditemukan';

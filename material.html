@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Belajar</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 id="material-title">Materi Belajar</h1>
+        <p id="progress-text-material">Kartu 1 dari X</p>
+        
+        <div class="flashcard-container" onclick="this.classList.toggle('is-flipped')">
+            <div class="flashcard">
+                <div class="card-face card-front">
+                    <p id="card-term">Istilah</p>
+                </div>
+                <div class="card-face card-back">
+                    <p id="card-definition">Definisi</p>
+                </div>
+            </div>
+        </div>
+        <p class="instruction">Klik kartu untuk melihat jawabannya!</p>
+
+        <div class="material-nav">
+            <button class="btn nav-btn" id="prev-btn">⬅️ Kembali</button>
+            <button class="btn nav-btn" id="next-btn">Selanjutnya ➡️</button>
+        </div>
+
+        <div id="finish-container" style="display: none;">
+            <h2>Hebat! Kamu sudah selesai mempelajari materi ini.</h2>
+            <a href="#" id="start-quiz-btn" class="btn">Siap! Mulai Kuis Sekarang! 🚀</a>
+        </div>
+        
+    </div>
+    
+    <script src="subjects.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const subjectKey = urlParams.get('subject');
+        const chapterIndex = urlParams.get('chapter');
+
+        const materialTitle = document.getElementById('material-title');
+        const progressText = document.getElementById('progress-text-material');
+        const cardTerm = document.getElementById('card-term');
+        const cardDefinition = document.getElementById('card-definition');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishContainer = document.getElementById('finish-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const flashcardContainer = document.querySelector('.flashcard-container');
+
+        const chapterData = quizData[subjectKey].chapters[chapterIndex];
+        const flashcards = chapterData.summary;
+        let currentCardIndex = 0;
+
+        function showCard(index) {
+            // Balikkan kartu ke depan setiap ganti kartu
+            flashcardContainer.classList.remove('is-flipped');
+
+            const card = flashcards[index];
+            cardTerm.innerText = card.term;
+            cardDefinition.innerText = card.definition;
+
+            progressText.innerText = `Kartu ${index + 1} dari ${flashcards.length}`;
+
+            // Atur visibilitas tombol navigasi
+            prevBtn.style.visibility = (index === 0) ? 'hidden' : 'visible';
+            nextBtn.style.visibility = (index === flashcards.length - 1) ? 'hidden' : 'visible';
+            
+            // Tampilkan tombol mulai kuis jika ini kartu terakhir
+            finishContainer.style.display = (index === flashcards.length - 1) ? 'block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                showCard(currentCardIndex);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentCardIndex < flashcards.length - 1) {
+                currentCardIndex++;
+                showCard(currentCardIndex);
+            }
+        });
+        
+        // Inisialisasi
+        materialTitle.innerText = chapterData.title;
+        startQuizBtn.href = `quiz.html?subject=${subjectKey}&chapter=${chapterIndex}`;
+        showCard(currentCardIndex);
+    </script>
+</body>
+</html>

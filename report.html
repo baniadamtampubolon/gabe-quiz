@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Belajar</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container report-page">
+        <h1>📊 Laporan Belajar</h1>
+        <p id="report-username"></p>
+        <div id="report-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Waktu</th>
+                        <th>Pelajaran</th>
+                        <th>Bab</th>
+                        <th>Skor</th>
+                        <th>Percobaan</th>
+                    </tr>
+                </thead>
+                <tbody id="report-body">
+                    </tbody>
+            </table>
+        </div>
+        <p id="no-report" style="display: none;">Kamu belum mengerjakan kuis sama sekali. Yuk, mulai kerjakan kuis!</p>
+        <div class="report-buttons">
+            <a href="index.html" class="btn back-btn">Kembali ke Awal</a>
+            <button class="btn delete-btn" onclick="clearReport()">Hapus Semua Laporan</button>
+        </div>
+    </div>
+
+    <script>
+        const reportBody = document.getElementById('report-body');
+        const noReportMessage = document.getElementById('no-report');
+        const reportUsername = document.getElementById('report-username');
+        const savedName = localStorage.getItem('quizUsername') || 'Siswa';
+        
+        reportUsername.innerText = `Laporan untuk: ${savedName}`;
+
+        // Ambil data laporan dari localStorage
+        const reports = JSON.parse(localStorage.getItem('learningReportData')) || [];
+
+        if (reports.length === 0) {
+            noReportMessage.style.display = 'block';
+            document.getElementById('report-table-container').style.display = 'none';
+        } else {
+            // Tampilkan data dari yang terbaru ke terlama
+            reports.slice().reverse().forEach(report => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${report.date}</td>
+                    <td>${report.time}</td>
+                    <td>${report.subject}</td>
+                    <td>${report.chapter}</td>
+                    <td><b>${report.percentage}%</b> (${report.score}/${report.totalQuestions})</td>
+                    <td>ke-${report.attempt}</td>
+                `;
+                reportBody.appendChild(row);
+            });
+        }
+
+        function clearReport() {
+            if (confirm('Apakah kamu yakin ingin menghapus semua riwayat laporan? Aksi ini tidak bisa dibatalkan.')) {
+                localStorage.removeItem('learningReportData');
+                window.location.reload(); // Muat ulang halaman untuk melihat perubahan
+            }
+        }
+    </script>
+</body>
+</html>

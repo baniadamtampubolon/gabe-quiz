@@ -4,6 +4,16 @@ const quizData = {
         chapters: [
             {
                 title: 'Bab 1: Tumbuhan sebagai Sumber Kehidupan',
+                // --- TAMBAHKAN BAGIAN INI ---
+                summary: [
+                    { term: "Akar", definition: "Bagian tumbuhan di dalam tanah yang menyerap air dan nutrisi." },
+                    { term: "Batang", definition: "Bagian tumbuhan yang menopang daun dan mengalirkan air ke seluruh bagian." },
+                    { term: "Daun", definition: "Tempat tumbuhan 'memasak' makanannya sendiri melalui proses fotosintesis." },
+                    { term: "Fotosintesis", definition: "Proses pembuatan makanan pada tumbuhan dengan bantuan cahaya matahari, air, dan karbon dioksida." },
+                    { term: "Bunga", definition: "Alat perkembangbiakan generatif pada tumbuhan yang menarik serangga." },
+                    { term: "Generatif", definition: "Cara perkembangbiakan tumbuhan melalui biji (hasil penyerbukan)." },
+                    { term: "Vegetatif", definition: "Cara perkembangbiakan tumbuhan tanpa melalui biji, misalnya stek atau cangkok." }
+                ],
                 questions: [
                     // --- SOAL IPAS BAB 1 DIMULAI DARI SINI ---
                     {
@@ -160,6 +170,15 @@ const quizData = {
             }, // <-- KURUNG PENUTUP BAB 1
             {
                 title: 'Bab 2: Wujud Zat dan Perubahannya',
+                summary: [
+                    { term: "Benda Padat", definition: "Wujud benda yang bentuk dan volumenya selalu tetap. Contoh: batu, kayu." },
+                    { term: "Benda Cair", definition: "Wujud benda yang bentuknya mengikuti wadahnya, tetapi volumenya tetap. Contoh: air, sirup." },
+                    { term: "Benda Gas", definition: "Wujud benda yang bentuk dan volumenya selalu berubah mengisi seluruh ruangan. Contoh: udara, asap." },
+                    { term: "Membeku", definition: "Perubahan wujud dari cair menjadi padat. Contoh: air menjadi es." },
+                    { term: "Mencair", definition: "Perubahan wujud dari padat menjadi cair. Contoh: es menjadi air." },
+                    { term: "Menguap", definition: "Perubahan wujud dari cair menjadi gas. Contoh: air mendidih menjadi uap." },
+                    { term: "Mengembun", definition: "Perubahan wujud dari gas menjadi cair. Contoh: titik air di luar gelas es." }
+                ],
                 questions: [
                     { 
                         question: "Berikut ini yang termasuk benda padat adalah...", 

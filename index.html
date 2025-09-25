@@ -11,17 +11,42 @@
     <div class="container">
         <div id="home">
             <h1>📚 Pusat Kuis Interaktif 📚</h1>
-            <p>Selamat datang, Jagoan! Pilih mata pelajaran di bawah ini untuk memulai petualangan belajarmu!</p>
+            <p>Masukkan namamu di bawah ini, lalu pilih mata pelajaran untuk memulai!</p>
+
+            <input type="text" id="name-input" placeholder="Ketik namamu di sini...">
             
             <div id="subject-selection">
-                <a href="chapters.html?subject=ipas" class="btn subject-btn">
+                <a href="#" class="btn subject-btn" onclick="selectSubject('ipas')">
                     🌳 Ilmu Pengetahuan Alam dan Sosial
                 </a>
-                <a href="chapters.html?subject=bahasa_inggris" class="btn subject-btn">
+                <a href="#" class="btn subject-btn" onclick="selectSubject('bahasa_inggris')">
                     🌍 Bahasa Inggris
                 </a>
-                </div>
+            </div>
+
+            <a href="report.html" class="btn report-btn">📊 Lihat Laporan Belajar</a>
         </div>
     </div>
+    <script>
+        const nameInput = document.getElementById('name-input');
+
+        // Jika sudah ada nama, tampilkan kembali
+        const savedName = localStorage.getItem('quizUsername');
+        if (savedName) {
+            nameInput.value = savedName;
+        }
+
+        function selectSubject(subjectKey) {
+            const username = nameInput.value;
+            if (username.trim() === '') {
+                alert('Harap isi namamu terlebih dahulu!');
+                return;
+            }
+            // Simpan nama ke localStorage
+            localStorage.setItem('quizUsername', username);
+            // Arahkan ke halaman pemilihan bab
+            window.location.href = `chapters.html?subject=${subjectKey}`;
+        }
+    </script>
 </body>
 </html>

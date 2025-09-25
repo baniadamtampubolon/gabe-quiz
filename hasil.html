@@ -24,7 +24,9 @@
             <a href="index.html" class="btn">Pilih Pelajaran Lain</a>
         </div>
     </div>
-    <script src="subjects.js"></script> <script>
+<script src="subjects.js"></script>
+    <script>
+        // --- BAGIAN ATAS SAMA SEPERTI SEBELUMNYA ---
         const percentageScoreElement = document.getElementById('percentage-score');
         const finalScoreElement = document.getElementById('final-score');
         const feedbackMessage = document.getElementById('feedback-message');
@@ -33,28 +35,25 @@
         const score = localStorage.getItem('mostRecentScore') || 0;
         const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || [];
         const questions = JSON.parse(localStorage.getItem('quizQuestions')) || [];
-        const subjectKey = localStorage.getItem('quizSubject'); // Ambil info subjek
+        const subjectKey = localStorage.getItem('quizSubject');
         const totalQuestions = questions.length;
+        
+        const chapterIndex = quizData[subjectKey].chapters.findIndex(c => JSON.stringify(c.questions) === JSON.stringify(questions));
 
-        // Atur link untuk tombol "Pilih Bab Lain"
+        // Atur link untuk tombol
         const changeChapterBtn = document.getElementById('change-chapter-btn');
         if (subjectKey) {
             changeChapterBtn.href = `chapters.html?subject=${subjectKey}`;
         }
-        
-        // Atur link untuk tombol "Coba Lagi"
         const retryBtn = document.getElementById('retry-btn');
-        const originalQuizLink = window.location.href.replace('hasil.html', 'quiz.html'); // Cara simpel
-        // Agar lebih akurat, kita bisa membangun ulang dari localStorage, tapi ini cukup
-        const urlParams = new URLSearchParams(window.location.search);
-        const chapterIndex = questions.length > 0 ? quizData[subjectKey].chapters.findIndex(c => c.questions.length === questions.length) : 0;
         retryBtn.href = `quiz.html?subject=${subjectKey}&chapter=${chapterIndex}`;
 
-
+        // Tampilkan skor
         const scorePercentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
         percentageScoreElement.innerText = `${scorePercentage}%`;
         finalScoreElement.innerText = `(${score} dari ${totalQuestions} Jawaban Benar)`;
 
+        // Tampilkan feedback (tidak berubah)
         if (scorePercentage >= 85) {
             feedbackMessage.innerText = "Luar biasa! Kamu adalah Master! Pengetahuanmu hebat!";
         } else if (scorePercentage >= 60) {
@@ -62,11 +61,43 @@
         } else {
             feedbackMessage.innerText = "Jangan sedih! Ini adalah awal yang baik. Yuk, kita pelajari lagi bersama agar makin jago!";
         }
-        
+
+        // --- FUNGSI BARU UNTUK MENYIMPAN LAPORAN ---
+        function saveLearningReport() {
+            const username = localStorage.getItem('quizUsername') || 'Anonymous';
+            const reports = JSON.parse(localStorage.getItem('learningReportData')) || [];
+            
+            const subjectName = quizData[subjectKey].subjectName;
+            const chapterTitle = quizData[subjectKey].chapters[chapterIndex].title;
+            
+            // Hitung percobaan ke berapa untuk bab ini
+            const attempt = reports.filter(r => r.subject === subjectName && r.chapter === chapterTitle).length + 1;
+            
+            const now = new Date();
+            const newReport = {
+                name: username,
+                subject: subjectName,
+                chapter: chapterTitle,
+                score: score,
+                totalQuestions: totalQuestions,
+                percentage: scorePercentage,
+                attempt: attempt,
+                date: now.toLocaleDateString('id-ID'), // Format tanggal Indonesia
+                time: now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) // Format waktu Indonesia
+            };
+            
+            reports.push(newReport);
+            localStorage.setItem('learningReportData', JSON.stringify(reports));
+        }
+
+        // Panggil fungsi untuk menyimpan laporan
+        saveLearningReport();
+        // ---------------------------------------------
+
+        // Menampilkan evaluasi jawaban (kode ini tidak berubah)
         questions.forEach((question, index) => {
             const userAnswerIndex = userAnswers[index];
             const isCorrect = userAnswerIndex === question.answer;
-
             const evaluationHTML = `
                 <div class="evaluation-item ${isCorrect ? 'correct' : 'incorrect'}">
                     <p><b>Pertanyaan ${index + 1}:</b> ${question.question}</p>
