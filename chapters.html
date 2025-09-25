@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilih Bab</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div id="chapters-container">
+            <h1 id="subject-title">Pilih Bab</h1>
+            <div id="chapter-list">
+                </div>
+            <a href="index.html" class="btn back-btn">Kembali Pilih Pelajaran</a>
+        </div>
+    </div>
+    
+    <script src="subjects.js"></script> 
+    <script>
+        // Mengambil parameter 'subject' dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const subjectKey = urlParams.get('subject');
+        
+        const subjectData = quizData[subjectKey];
+        
+        const subjectTitleElement = document.getElementById('subject-title');
+        const chapterListElement = document.getElementById('chapter-list');
+
+        if (subjectData) {
+            subjectTitleElement.innerText = `Pilih Bab - ${subjectData.subjectName}`;
+            
+            subjectData.chapters.forEach((chapter, index) => {
+                const chapterLink = document.createElement('a');
+                chapterLink.href = `quiz.html?subject=${subjectKey}&chapter=${index}`;
+                chapterLink.className = 'btn chapter-btn';
+                chapterLink.innerText = chapter.title;
+                chapterListElement.appendChild(chapterLink);
+            });
+        } else {
+            subjectTitleElement.innerText = 'Mata Pelajaran Tidak Ditemukan';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Kuis</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div id="result-container">
+            <h1>🎉 Hasil Quiz Kamu! 🎉</h1>
+            <h1 id="percentage-score">0%</h1>
+            <h2 id="final-score">(0 dari 0 Jawaban Benar)</h2>
+            <p id="feedback-message">Kamu Hebat!</p>
+            
+            <div id="evaluation-container">
+                <h3>Yuk, Kita Cek Jawabanmu!</h3>
+            </div>
+            
+            <a href="quiz.html" class="btn" id="retry-btn">Coba Lagi 🔄</a>
+            <a href="chapters.html" class="btn" id="change-chapter-btn">Pilih Bab Lain</a>
+            <a href="index.html" class="btn">Pilih Pelajaran Lain</a>
+        </div>
+    </div>
+    <script src="subjects.js"></script> <script>
+        const percentageScoreElement = document.getElementById('percentage-score');
+        const finalScoreElement = document.getElementById('final-score');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const evaluationContainer = document.getElementById('evaluation-container');
+        
+        const score = localStorage.getItem('mostRecentScore') || 0;
+        const userAnswers = JSON.parse(localStorage.getItem('userAnswers')) || [];
+        const questions = JSON.parse(localStorage.getItem('quizQuestions')) || [];
+        const subjectKey = localStorage.getItem('quizSubject'); // Ambil info subjek
+        const totalQuestions = questions.length;
+
+        // Atur link untuk tombol "Pilih Bab Lain"
+        const changeChapterBtn = document.getElementById('change-chapter-btn');
+        if (subjectKey) {
+            changeChapterBtn.href = `chapters.html?subject=${subjectKey}`;
+        }
+        
+        // Atur link untuk tombol "Coba Lagi"
+        const retryBtn = document.getElementById('retry-btn');
+        const originalQuizLink = window.location.href.replace('hasil.html', 'quiz.html'); // Cara simpel
+        // Agar lebih akurat, kita bisa membangun ulang dari localStorage, tapi ini cukup
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapterIndex = questions.length > 0 ? quizData[subjectKey].chapters.findIndex(c => c.questions.length === questions.length) : 0;
+        retryBtn.href = `quiz.html?subject=${subjectKey}&chapter=${chapterIndex}`;
+
+
+        const scorePercentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
+        percentageScoreElement.innerText = `${scorePercentage}%`;
+        finalScoreElement.innerText = `(${score} dari ${totalQuestions} Jawaban Benar)`;
+
+        if (scorePercentage >= 85) {
+            feedbackMessage.innerText = "Luar biasa! Kamu adalah Master! Pengetahuanmu hebat!";
+        } else if (scorePercentage >= 60) {
+            feedbackMessage.innerText = "Bagus sekali! Kamu sudah paham banyak. Terus belajar ya!";
+        } else {
+            feedbackMessage.innerText = "Jangan sedih! Ini adalah awal yang baik. Yuk, kita pelajari lagi bersama agar makin jago!";
+        }
+        
+        questions.forEach((question, index) => {
+            const userAnswerIndex = userAnswers[index];
+            const isCorrect = userAnswerIndex === question.answer;
+
+            const evaluationHTML = `
+                <div class="evaluation-item ${isCorrect ? 'correct' : 'incorrect'}">
+                    <p><b>Pertanyaan ${index + 1}:</b> ${question.question}</p>
+                    <p>Jawabanmu: ${question.options[userAnswerIndex] !== undefined ? question.options[userAnswerIndex] : 'Tidak dijawab'} ${isCorrect ? '✅' : '❌'}</p>
+                    ${!isCorrect ? `<p><b>Jawaban Benar: ${question.options[question.answer]}</b></p>` : ''}
+                    <p class="explanation"><i>Penjelasan: ${question.explanation}</i></p>
+                </div>
+            `;
+            evaluationContainer.innerHTML += evaluationHTML;
+        });
+    </script>
+</body>
+</html>
