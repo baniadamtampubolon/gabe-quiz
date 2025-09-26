@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon.png">    
+    <title>Hasil Kuis - Keren Banget!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style/hasil.css">
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape" style="width: 50px; height: 50px; background: #667eea; border-radius: 50%;"></div>
+        <div class="shape" style="width: 30px; height: 30px; background: #f093fb; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+        <div class="shape" style="width: 40px; height: 40px; background: #4facfe; clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);"></div>
+        <div class="shape" style="width: 35px; height: 35px; background: #764ba2; border-radius: 50%;"></div>
+        <div class="shape" style="width: 45px; height: 45px; background: #f5576c; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+        <div class="shape" style="width: 25px; height: 25px; background: #00f2fe; transform: rotate(45deg);"></div>
+    </div>
+
+    <div class="container">
+        <div class="result-card">
+            <div class="celebration-header">
+                <span class="celebration-emoji" id="celebration-emoji">🎉</span>
+                <h1 class="title">Hasil Quiz Kamu!</h1>
+            </div>
+
+            <div class="score-display">
+                <div class="score-circle">
+                    <div class="score-inner">
+                        <div class="percentage-score" id="percentage-score">0%</div>
+                        <div class="score-fraction" id="score-fraction">(0 dari 0)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feedback-message" id="feedback-message">
+                Kamu Hebat!
+            </div>
+
+            <div class="action-buttons">
+                <a href="quiz.html" class="btn btn-primary" id="retry-btn">
+                    <i class="fas fa-redo"></i>
+                    <span>Coba Lagi</span>
+                </a>
+                <a href="chapters.html" class="btn btn-secondary" id="change-chapter-btn">
+                    <i class="fas fa-book-open"></i>
+                    <span>Pilih Bab Lain</span>
+                </a>
+                <a href="../index.html" class="btn btn-tertiary">
+                    <i class="fas fa-home"></i>
+                    <span>Pilih Pelajaran Lain</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="result-card evaluation-section">
+            <div class="evaluation-header">
+                <h2 class="evaluation-title">Mari Kita Review!</h2>
+                <p class="evaluation-subtitle">Yuk lihat jawaban kamu dan belajar lebih banyak! 📚</p>
+            </div>
+            <div id="evaluation-container">
+                <!-- Evaluation items will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../subjects.js"></script>
+    <script src="../static/script/hasil.js"></script>
+</body>
+</html>

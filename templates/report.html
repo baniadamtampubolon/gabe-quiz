@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon.png">    
+    <title>Laporan Belajar - Dashboard Keren!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style/report.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-card">
+            <h1 class="title">
+                <i class="fas fa-chart-line"></i> Dashboard Belajar
+            </h1>
+            <div class="username" id="report-username"></div>
+        </div>
+
+        <div class="stats-grid" id="stats-section" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <div class="stat-number" id="total-quizzes">0</div>
+                <div class="stat-label">Total Kuis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-number" id="avg-score">0%</div>
+                <div class="stat-label">Rata-rata Skor</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="stat-number" id="best-score">0%</div>
+                <div class="stat-label">Skor Terbaik</div>
+            </div>
+        </div>
+
+        <div class="report-card">
+            <h2 class="report-title">
+                <i class="fas fa-history"></i> Riwayat Pembelajaran
+            </h2>
+            
+            <div id="report-container">
+                <!-- Report items will be inserted here -->
+            </div>
+
+            <div id="no-report" class="no-report" style="display: none;">
+                <div class="no-report-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div class="no-report-text">Belum ada riwayat belajar</div>
+                <p>Yuk, mulai kerjakan kuis pertamamu!</p>
+                <br>
+                <a href="../index.html" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Mulai Belajar
+                </a>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="../index.html" class="btn btn-primary">
+                <i class="fas fa-home"></i> Kembali ke Beranda
+            </a>
+            <button class="btn btn-danger" onclick="clearReport()">
+                <i class="fas fa-trash-alt"></i> Hapus Semua Laporan
+            </button>
+        </div>
+    </div>
+
+    <script src="../static/script/report.js"></script>
+</body>
+</html>

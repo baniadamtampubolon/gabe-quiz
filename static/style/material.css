@@ -1,0 +1,181 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Fredoka', cursive;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.header {
+    background: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+
+.title {
+    color: #4A5568;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.progress {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.flashcard-wrapper {
+    perspective: 1000px;
+    margin: 30px 0;
+}
+
+.flashcard-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    cursor: pointer;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard-container:hover { transform: scale(1.02); }
+.flashcard-container.is-flipped { transform: rotateY(180deg); }
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.card-front {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+.card-back {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.card-text {
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.instruction {
+    color: white;
+    font-size: 1.3rem;
+    margin: 20px 0;
+    opacity: 0.9;
+}
+
+.nav-controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Fredoka', cursive;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-nav {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.finish-section {
+    background: rgba(255,255,255,0.95);
+    padding: 40px;
+    border-radius: 25px;
+    margin-top: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.finish-title {
+    color: #4A5568;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.flip-hint {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .container { padding: 0 15px; }
+    .title { font-size: 2rem; }
+    .card-face { padding: 25px; }
+    .card-text { font-size: 1.4rem; }
+    .nav-controls { flex-direction: column; align-items: center; }
+}

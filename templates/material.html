@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon.png">    
+    <title>Materi Belajar - Yuk Belajar!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style/material.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title" id="material-title">Materi Belajar</h1>
+            <div class="progress" id="progress-text">Kartu 1 dari X</div>
+        </div>
+
+        <div class="flashcard-wrapper">
+            <div class="flashcard-container" onclick="this.classList.toggle('is-flipped')">
+                <div class="flip-hint">
+                    <i class="fas fa-sync-alt"></i> Klik untuk flip
+                </div>
+                <div class="card-face card-front">
+                    <p class="card-text" id="card-term">Istilah</p>
+                </div>
+                <div class="card-face card-back">
+                    <p class="card-text" id="card-definition">Definisi</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="instruction">
+            <i class="fas fa-hand-pointer"></i> Klik kartu untuk melihat jawabannya!
+        </p>
+
+        <div class="nav-controls">
+            <button class="btn btn-nav" id="prev-btn">
+                <i class="fas fa-chevron-left"></i> Sebelumnya
+            </button>
+            <button class="btn btn-nav" id="next-btn">
+                Selanjutnya <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <div id="finish-container" style="display: none;">
+            <div class="finish-section">
+                <h2 class="finish-title">🎉 Hebat! Kamu sudah menguasai materi ini!</h2>
+                <a href="#" id="start-quiz-btn" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Siap! Mulai Kuis Sekarang!
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../subjects.js"></script>
+    <script src="../static/script/material.js"></script>
+</body>
+</html>
