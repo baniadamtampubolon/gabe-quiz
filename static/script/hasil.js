@@ -1,4 +1,5 @@
 // Get elements
+import { quizData } from '../../data/subjects.js';
 const percentageScoreElement = document.getElementById('percentage-score');
 const scoreFractionElement = document.getElementById('score-fraction');
 const feedbackMessage = document.getElementById('feedback-message');

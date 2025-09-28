@@ -1,3 +1,5 @@
+import { quizData } from '../../data/subjects.js';
+
 
 const urlParams = new URLSearchParams(window.location.search);
 const subjectKey = urlParams.get('subject');

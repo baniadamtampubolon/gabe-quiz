@@ -1,4 +1,6 @@
 // Mengambil elemen dari HTML
+import { quizData } from '../../data/subjects.js';
+
 const questionElement = document.getElementById('question');
 const optionsContainer = document.getElementById('options-container');
 const nextBtn = document.getElementById('next-btn');
