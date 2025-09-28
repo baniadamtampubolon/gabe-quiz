@@ -16,31 +16,56 @@
             <div class="progress" id="progress-text">Kartu 1 dari X</div>
         </div>
 
-        <div class="flashcard-wrapper">
-            <div class="flashcard-container" onclick="this.classList.toggle('is-flipped')">
-                <div class="flip-hint">
-                    <i class="fas fa-sync-alt"></i> Klik untuk flip
+        <!-- Mode Toggle -->
+        <div class="mode-toggle">
+            <button class="toggle-btn active" id="flashcard-toggle">
+                <i class="fas fa-clone"></i> Flashcard
+            </button>
+            <button class="toggle-btn" id="summary-toggle">
+                <i class="fas fa-list-alt"></i> Rangkuman
+            </button>
+        </div>
+
+        <!-- Flashcard Mode -->
+        <div class="flashcard-mode" id="flashcard-mode">
+            <div class="flashcard-wrapper">
+                <div class="flashcard-container" onclick="this.classList.toggle('is-flipped')">
+                    <div class="flip-hint">
+                        <i class="fas fa-sync-alt"></i> Klik untuk flip
+                    </div>
+                    <div class="card-face card-front">
+                        <p class="card-text" id="card-term">Istilah</p>
+                    </div>
+                    <div class="card-face card-back">
+                        <p class="card-text" id="card-definition">Definisi</p>
+                    </div>
                 </div>
-                <div class="card-face card-front">
-                    <p class="card-text" id="card-term">Istilah</p>
-                </div>
-                <div class="card-face card-back">
-                    <p class="card-text" id="card-definition">Definisi</p>
-                </div>
+            </div>
+
+            <p class="instruction">
+                <i class="fas fa-hand-pointer"></i> Klik kartu untuk melihat jawabannya!
+            </p>
+
+            <div class="nav-controls">
+                <button class="btn btn-nav" id="prev-btn">
+                    <i class="fas fa-chevron-left"></i> Sebelumnya
+                </button>
+                <button class="btn btn-nav" id="next-btn">
+                    Selanjutnya <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
 
-        <p class="instruction">
-            <i class="fas fa-hand-pointer"></i> Klik kartu untuk melihat jawabannya!
-        </p>
-
-        <div class="nav-controls">
-            <button class="btn btn-nav" id="prev-btn">
-                <i class="fas fa-chevron-left"></i> Sebelumnya
-            </button>
-            <button class="btn btn-nav" id="next-btn">
-                Selanjutnya <i class="fas fa-chevron-right"></i>
-            </button>
+        <!-- Summary Mode -->
+        <div class="summary-mode" id="summary-mode">
+            <div class="summary-container">
+                <div class="summary-stats">
+                    <div class="stats-text" id="summary-stats">Total materi: 0 konsep</div>
+                </div>
+                <div id="summary-content">
+                    <!-- Summary items will be dynamically generated here -->
+                </div>
+            </div>
         </div>
 
         <div id="finish-container" style="display: none;">
@@ -52,8 +77,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- <script type="module" src="../data/subjects.js"></script> -->
-    <script type="module" src="../static/script/material.js"></script>
+    <script type="module" src="../static/script/material.js"></script>    
 </body>
 </html>

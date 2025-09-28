@@ -139,11 +139,11 @@ if (subjectData) {
 }
 
 // Tambahkan sound effect (optional - dapat diaktifkan jika diinginkan)
-function playClickSound() {
-    // Bisa ditambahkan audio click sound di sini
-    // const audio = new Audio('click-sound.mp3');
-    // audio.play().catch(e => {}); // Handle autoplay policy
-}
+// function playClickSound() {
+//     // Bisa ditambahkan audio click sound di sini
+//     const audio = new Audio('click-sound.mp3');
+//     audio.play().catch(e => {}); // Handle autoplay policy
+// }
 
 // Tambahkan event listener untuk semua tombol
 document.querySelectorAll('.btn').forEach(btn => {

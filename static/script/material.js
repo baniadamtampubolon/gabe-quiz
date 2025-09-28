@@ -13,12 +13,19 @@ const elements = {
     nextBtn: document.getElementById('next-btn'),
     finishContainer: document.getElementById('finish-container'),
     startQuizBtn: document.getElementById('start-quiz-btn'),
-    flashcard: document.querySelector('.flashcard-container')
+    flashcard: document.querySelector('.flashcard-container'),
+    flashcardToggle: document.getElementById('flashcard-toggle'),
+    summaryToggle: document.getElementById('summary-toggle'),
+    flashcardMode: document.getElementById('flashcard-mode'),
+    summaryMode: document.getElementById('summary-mode'),
+    summaryContent: document.getElementById('summary-content'),
+    summaryStats: document.getElementById('summary-stats')
 };
 
 const chapterData = quizData[subjectKey].chapters[chapterIndex];
 const flashcards = chapterData.summary;
 let currentCardIndex = 0;
+let currentMode = 'flashcard';
 
 function showCard(index) {
     elements.flashcard.classList.remove('is-flipped');
@@ -33,6 +40,44 @@ function showCard(index) {
     elements.finishContainer.style.display = index === flashcards.length - 1 ? 'block' : 'none';
 }
 
+function generateSummary() {
+    const summaryHTML = flashcards.map((card, index) => `
+        <div class="summary-item">
+            <div class="summary-term">
+                <div class="term-icon"></div>
+                ${card.term}
+            </div>
+            <div class="summary-definition">
+                ${card.definition}
+            </div>
+        </div>
+    `).join('');
+
+    elements.summaryContent.innerHTML = summaryHTML;
+    elements.summaryStats.innerText = `Total materi: ${flashcards.length} konsep`;
+}
+
+function switchMode(mode) {
+    currentMode = mode;
+    
+    if (mode === 'flashcard') {
+        elements.flashcardToggle.classList.add('active');
+        elements.summaryToggle.classList.remove('active');
+        elements.flashcardMode.style.display = 'block';
+        elements.summaryMode.style.display = 'none';
+        elements.progress.style.display = 'inline-block';
+    } else {
+        elements.summaryToggle.classList.add('active');
+        elements.flashcardToggle.classList.remove('active');
+        elements.flashcardMode.style.display = 'none';
+        elements.summaryMode.style.display = 'block';
+        elements.progress.style.display = 'none';
+        elements.finishContainer.style.display = 'block';
+        generateSummary();
+    }
+}
+
+// Event Listeners
 elements.prevBtn.onclick = () => {
     if (currentCardIndex > 0) {
         currentCardIndex--;
@@ -47,7 +92,11 @@ elements.nextBtn.onclick = () => {
     }
 };
 
+elements.flashcardToggle.onclick = () => switchMode('flashcard');
+elements.summaryToggle.onclick = () => switchMode('summary');
+
 // Initialize
 elements.title.innerText = chapterData.title;
 elements.startQuizBtn.href = `quiz.html?subject=${subjectKey}&chapter=${chapterIndex}`;
 showCard(currentCardIndex);
+generateSummary();
